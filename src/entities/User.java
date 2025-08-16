@@ -29,27 +29,49 @@ public class User {
 		return grossSalary * 0.08;
 	}
 	
-	public Double getINSSAliquota() {
-		if(grossSalary <= 1518.00) {
-			return 0.075;
-		} else if(grossSalary >= 1518.01 && grossSalary <= 2793.88) {
-			return 0.09;
-		} else if(grossSalary >= 2793.89 && grossSalary <= 4190.83) {
-			return 0.12;
-		} else if(grossSalary >= 4190.84) {
-			return 0.14;
-		} else {
-			return 0.14;
-		}
+	public Double getINSS() {
+		Double netSalary;
+		netSalary = grossSalary - calculateINSS();
+		return netSalary;
 	}
 	
-	public Double getINSS() {
-			if(grossSalary * getINSSAliquota() >= 951.62) {
-				return 951.62;
-			} else {
-				return grossSalary * getINSSAliquota();
-			}
+	// Método de Cálculo de INSS
+	public Double calculateINSS() {
+		double[][] faixas = {
+	            {1412.00, 0.075},
+	            {2666.68, 0.09},
+	            {4000.03, 0.12},
+	            {7786.02, 0.14}
+	        };
+
+	        double inss = 0.0;
+	        double salarioRestante = grossSalary;
+	        double limiteAnterior = 0.0;
+
+	        for (int i = 0; i < faixas.length; i++) {
+	            double limite = faixas[i][0];
+	            double aliquota = faixas[i][1];
+
+	            if (grossSalary > limite) {
+	                double base = limite - limiteAnterior;
+	                inss += base * aliquota;
+	                salarioRestante -= base;
+	                limiteAnterior = limite;
+	            } else {
+	                double base = salarioRestante;
+	                inss += base * aliquota;
+	                break;
+	            }
+	        }
+
+	        double tetoMaximo = 908.86;
+	        if (inss > tetoMaximo) {
+	            inss = tetoMaximo;
+	        }
+
+	        return Math.round(inss * 100.0) / 100.0;
 	}
+	
 	
 	public Double getIRRF() {
 		if(grossSalary >= 1903.99 && grossSalary <= 2826.65) {
