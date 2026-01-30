@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import entities.User;
+import facades.CalculadoraFacade;
 
 public class Program {
 	public static void main(String[] args) {
@@ -20,8 +21,9 @@ public class Program {
 		Double grossSalary = sc.nextDouble();
 		
 		User user = new User(name, days, hours, grossSalary);
+		CalculadoraFacade calculadora = new CalculadoraFacade();
 		
-		System.out.println(user);
+		System.out.println(calculadora.calcular(user));
 		
 		sc.close();
 	}
