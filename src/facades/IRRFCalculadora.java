@@ -9,7 +9,7 @@ public class IRRFCalculadora {
 		if(inss < 607.20) {
 			baseCalculo = salarioBruto - 607.20;
 		} else {
-			baseCalculo = salarioBruto - 607.20;
+			baseCalculo = salarioBruto - inss;
 		}
 		
 
